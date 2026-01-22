@@ -1,11 +1,25 @@
 FROM jupyter/pyspark-notebook:latest
 
+# Installer Java 11 et wget
 USER root
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jdk wget && \
+    rm -rf /var/lib/apt/lists/*
 
-# Installer kafka-python et requests
-RUN pip install kafka-python requests
+# Définir JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
 
+# Repasser à l'utilisateur jovyan
 USER jovyan
 
+# Copier ton script
 COPY notebooks/ /home/jovyan/work/notebooks/
-WORKDIR /home/jovyan/work
+
+# Installer dépendances Python
+RUN pip install --upgrade --force-reinstall pyspark==3.5.0 kafka-python requests
+
+
+WORKDIR /home/jovyan/work/notebooks
+CMD ["start-notebook.sh"]
+

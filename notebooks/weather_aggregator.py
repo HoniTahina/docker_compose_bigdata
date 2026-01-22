@@ -1,8 +1,13 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col, window, avg, sum
 from pyspark.sql.types import StructType, StructField, DoubleType, BooleanType, StringType, TimestampType
-import findspark
-findspark.init("/opt/spark-3.5.2-bin-hadoop3")  # correspond au SPARK_HOME
+import os
+
+# Forcer Java
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-11-openjdk-amd64"
+os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ["PATH"]
+
+from pyspark.sql import SparkSession
 
 KAFKA_BROKER = "kafka:9092"
 KAFKA_TOPIC = "weather_transformed"
