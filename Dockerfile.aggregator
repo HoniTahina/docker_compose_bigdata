@@ -17,7 +17,7 @@ USER jovyan
 COPY notebooks/ /home/jovyan/work/notebooks/
 
 # Installer dépendances Python
-RUN pip install --upgrade --force-reinstall pyspark==3.5.0 kafka-python requests
+RUN pip install pyspark==3.5.0 kafka-python requests
 
 
 WORKDIR /home/jovyan/work/notebooks

@@ -1,1 +1,2 @@
-docker exec -it kafka kafka-console-consumer --bootstrap-server kafka:9092 --topic weather_transformed --from-beginning
+kafka: docker exec -it kafka kafka-console-consumer --bootstrap-server kafka:9092 --topic weather_transformed --from-beginning
+
