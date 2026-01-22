@@ -1,0 +1,10 @@
+services:
+  jupyter:
+    image: jupyter/pyspark-notebook
+    container_name: jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work 
+    environment:
+      JUPYTER_TOKEN: "p@ssword"
