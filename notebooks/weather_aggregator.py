@@ -15,7 +15,7 @@ KAFKA_TOPIC = "weather_transformed"
 def main():
     spark = SparkSession.builder \
         .appName("WeatherAggregation") \
-        .master("local[*]") \
+        .master("spark://spark-master:7077") \
         .config(
             "spark.jars.packages",
             "org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.1"
