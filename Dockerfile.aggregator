@@ -1,10 +1,11 @@
-# Dockerfile-aggregator
 FROM jupyter/pyspark-notebook:latest
 
-# Copier le notebook aggregator
-COPY notebooks/weather_aggregator.py /home/jovyan/work/
+USER root
 
-# Installer PySpark + Kafka packages (si pas déjà dans l'image)
-RUN pip install --no-cache-dir pyspark kafka-python
+# Installer kafka-python et requests
+RUN pip install kafka-python requests
 
+USER jovyan
+
+COPY notebooks/ /home/jovyan/work/notebooks/
 WORKDIR /home/jovyan/work
