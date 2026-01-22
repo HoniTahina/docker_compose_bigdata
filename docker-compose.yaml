@@ -26,11 +26,29 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  spark-master:
+    image: bde2020/spark-master:3.0.1-hadoop3.2
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "7077:7077"
+      - "8080:8080"
 
+  spark-worker:
+    image: bde2020/spark-worker:3.0.1-hadoop3.2
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER=spark://spark-master:7077
+    ports:
+      - "8081:8081"
   jupyter:
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.producer_jupyter
     container_name: jupyter
     ports:
       - "8888:8888"
@@ -40,3 +58,13 @@ services:
       JUPYTER_TOKEN: "p@ssword"
     command: bash /home/jovyan/work/notebooks/start.sh
   
+  weather-aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile.aggregator
+    container_name: weather-aggregator
+    depends_on:
+      - kafka
+      - spark-master
+    environment:
+      SPARK_MASTER: "spark://spark-master:7077"
